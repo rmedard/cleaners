@@ -35,7 +35,10 @@ class ProfessionalComponent extends StatelessWidget {
             avatar: Icon(Icons.euro_symbol),
             backgroundColor: Colors.transparent,
           ),
-          subtitle: Text('Subtitle here', style: TextStyle(color: Colors.black38),),
+          subtitle: Text(
+            'Subtitle here',
+            style: TextStyle(color: Colors.black38),
+          ),
         ),
       ),
     );
