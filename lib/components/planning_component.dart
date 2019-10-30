@@ -33,12 +33,8 @@ class PlanningComponent extends StatelessWidget {
             Divider(color: Theme.of(context).accentColor, thickness: 1.0)
           ],
         ),
-        leading: FittedBox(
-          fit: BoxFit.fill,
-          child: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/profile.png'),
-            radius: 30.0,
-          ),
+        leading: ClipOval(
+          child: Image.asset('assets/images/profile.png'),
         ),
         subtitle: Column(
           children: <Widget>[

@@ -14,8 +14,9 @@ class ProfessionalComponent extends StatelessWidget {
       actionExtentRatio: 0.25,
       actions: <Widget>[
         IconSlideAction(
+          foregroundColor: Theme.of(context).accentColor,
           caption: 'Commander',
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).primaryColor,
           icon: Icons.add,
           onTap: () {},
         ),
@@ -41,6 +42,7 @@ class ProfessionalComponent extends StatelessWidget {
           ),
         ),
       ),
+      closeOnScroll: true,
     );
   }
 }
