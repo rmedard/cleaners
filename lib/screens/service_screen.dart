@@ -27,7 +27,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
         title: Text(
           'Service ${widget.serviceId}',
           style: TextStyle(
-            color: Theme.of(context).accentColor,
+            color: Theme
+                .of(context)
+                .accentColor,
           ),
         ),
       ),
@@ -46,17 +48,23 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     leading: Text(
                       'Date',
                       style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                          color: Theme
+                              .of(context)
+                              .primaryColor,
                           fontSize: 25.0),
                     ),
                     title: Text(
                       DateFormat('d-MMM-y').format(selectedDateTime),
                       style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                          color: Theme
+                              .of(context)
+                              .primaryColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0),
                     ),
-                    trailing: Icon(Icons.calendar_today, color: Theme.of(context).primaryColor,),
+                    trailing: Icon(Icons.calendar_today, color: Theme
+                        .of(context)
+                        .primaryColor,),
                     onTap: () async {
                       DateTime newDateTime = await showDatePicker(
                           context: context,
@@ -67,7 +75,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             return selectable.isAfter(DateTime.now());
                           });
                       setState(() {
-                        selectedDateTime = newDateTime == null ? selectedDateTime : newDateTime;
+                        selectedDateTime =
+                        newDateTime == null ? selectedDateTime : newDateTime;
                       });
                     },
                   ),
@@ -95,11 +104,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       professional: dummyService.professionals[index],
                     );
                   },
-                  separatorBuilder: (context, index) => Divider(
-                    height: 2.0,
-                    color: Theme.of(context).primaryColor,
-                    thickness: 2.0,
-                  ),
+                  separatorBuilder: (context, index) =>
+                      Divider(
+                        height: 2.0,
+                        color: Theme
+                            .of(context)
+                            .primaryColor,
+                        thickness: 2.0,
+                      ),
                 ),
               ),
             )

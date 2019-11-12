@@ -9,15 +9,14 @@ class Plannings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.separated(
-        itemBuilder: (context, index) {
-          return PlanningComponent();
-        },
-        separatorBuilder: (context, index) => Divider(height: 3.0),
-        itemCount: plannings.length,
-        padding: EdgeInsets.all(8.0),
-      ),
+    return ListView.separated(
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        return PlanningComponent();
+      },
+      separatorBuilder: (context, index) => Divider(height: 3.0),
+      itemCount: plannings.length,
+      padding: EdgeInsets.all(8.0),
     );
   }
 }

@@ -1,5 +1,8 @@
 import 'package:cleaners/models/service.dart';
 
+const String kApiUrl = 'http://www.isuku.site/api';
+const String kLoggedInUser = 'LOGGED_IN_USER';
+
 Service dummyService = Service(
     id: 1,
     name: 'Service test',
