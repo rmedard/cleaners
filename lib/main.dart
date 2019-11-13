@@ -1,3 +1,4 @@
+import 'package:cleaners/models/arguments/service_argument.dart';
 import 'package:cleaners/screens/service_screen.dart';
 import 'package:cleaners/screens/services_list_screen.dart';
 import 'package:cleaners/screens/tab_screen.dart';
@@ -20,10 +21,10 @@ class HouseCleaners extends StatelessWidget {
       onGenerateRoute: (settings) {
         MaterialPageRoute pageRoute;
         if (settings.name == ServicesListScreen.id) {
-          final String servicesType = settings.arguments;
+          final ServiceArgument serviceArgument = settings.arguments;
           pageRoute = MaterialPageRoute(
             builder: (context) {
-              return ServicesListScreen(servicesType);
+              return ServicesListScreen(serviceArgument);
             },
           );
         } else if(settings.name == ServiceScreen.id) {

@@ -66,12 +66,14 @@ class ProfileComponent extends StatelessWidget {
         ),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white, width: 3.0),
+            border: Border.all(color: Colors.white, width: 1.0),
             borderRadius: BorderRadius.circular(50.0),
           ),
           child: CircleAvatar(
             radius: 50.0,
-            backgroundImage: NetworkImage(person.picture),
+            backgroundImage: person.picture.isEmpty
+                ? AssetImage('assets/images/profile.png')
+                : NetworkImage(person.picture),
             backgroundColor: Colors.white,
           ),
         ),

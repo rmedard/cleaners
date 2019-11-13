@@ -9,10 +9,10 @@ import 'package:http/http.dart';
 class AuthService {
   final String apiUrl = kApiUrl;
   final FlutterSecureStorage storage = new FlutterSecureStorage();
+  final PersonMapper personMapper = new PersonMapper();
 
   Future<Person> login(String email, String password) async {
     var url = '$apiUrl/personas/sign_in';
-    PersonMapper personMapper = new PersonMapper();
     Person person;
     Response response =
         await post(url, body: {'email': email, 'password': password});
@@ -25,14 +25,14 @@ class AuthService {
     }
     return person;
   }
-  
+
   Future<void> logout() {
     return storage.delete(key: kLoggedInUser);
   }
 
   Future<Person> getLoggedInUser() async {
     var userJson = await storage.read(key: kLoggedInUser);
-    if(userJson != null) {
+    if (userJson != null) {
       return Person.fromJson(jsonDecode(userJson));
     } else {
       return null;

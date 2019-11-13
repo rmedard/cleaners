@@ -1,37 +1,19 @@
 import 'package:cleaners/components/service_component.dart';
-import 'package:cleaners/models/service.dart';
+import 'package:cleaners/models/arguments/service_argument.dart';
 import 'package:flutter/material.dart';
 
 class ServicesListScreen extends StatelessWidget {
   static const String id = 'services_list_screen';
+  final ServiceArgument _serviceArgument;
 
-  final String servicesType;
-  final List<Service> services = [
-    Service(
-        id: 1,
-        name: 'Service 1',
-        description: 'Fluctuss resistere in quadrata!Yes, there is zion, '
-            'it travels with hypnosis. Ecce, talis era! Fluctuss resistere '
-            'in quadrata!Yes, there is zion, it travels with hypnosis. '
-            'Ecce, talis era!'),
-    Service(
-        id: 2,
-        name: 'Service 2',
-        description: 'Fluctuss resistere in quadrata!'),
-    Service(
-        id: 3,
-        name: 'Service 3',
-        description: 'Fluctuss resistere in quadrata!'),
-  ];
-
-  ServicesListScreen(this.servicesType);
+  ServicesListScreen(this._serviceArgument);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Nos services d\'$servicesType',
+          'Nos services d\'${_serviceArgument.serviceType}',
           style: TextStyle(
             color: Color(0xFFFED330),
           ),
@@ -39,10 +21,10 @@ class ServicesListScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView.builder(
-          itemCount: services.length,
+          itemCount: _serviceArgument.services.length,
           itemBuilder: (context, index) {
             return ServiceComponent(
-              service: services[index], clickable: true,
+              service: _serviceArgument.services[index], clickable: true,
             );
           },
         ),

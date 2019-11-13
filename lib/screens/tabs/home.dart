@@ -1,7 +1,30 @@
+import 'package:cleaners/Services/services_service.dart';
+import 'package:cleaners/models/arguments/service_argument.dart';
+import 'package:cleaners/models/service.dart';
 import 'package:cleaners/screens/services_list_screen.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final ServicesService _servicesService = ServicesService();
+  List<Service> interiorServices = [];
+  List<Service> exteriorServices = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _servicesService.getServices().then((services) {
+      setState(() {
+        interiorServices = services.where((x) => x.categoryId == 1).toList();
+        exteriorServices = services.where((x) => x.categoryId == 2).toList();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -10,7 +33,7 @@ class Home extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, ServicesListScreen.id,
-                arguments: 'interieur');
+                arguments: ServiceArgument(serviceType: 'interieur', services: interiorServices));
           },
           child: Container(
             child: Padding(
@@ -36,7 +59,7 @@ class Home extends StatelessWidget {
                         color: Color(0xAAFED330),
                         child: Center(
                           child: Text(
-                            '12 Services',
+                            '${interiorServices.length} Services',
                             style: TextStyle(
                                 fontSize: 25.0,
                                 color: Colors.black,
@@ -54,7 +77,7 @@ class Home extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, ServicesListScreen.id,
-                arguments: 'exterieur');
+                arguments: ServiceArgument(serviceType: 'exterieur', services: exteriorServices));
           },
           child: Container(
             child: Padding(
@@ -80,7 +103,7 @@ class Home extends StatelessWidget {
                         color: Color(0xAAFED330),
                         child: Center(
                           child: Text(
-                            '14 Services',
+                            '${exteriorServices.length} Services',
                             style: TextStyle(
                                 fontSize: 25.0,
                                 color: Colors.black,
