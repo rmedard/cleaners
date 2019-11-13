@@ -15,9 +15,8 @@ class ServicesService {
     Response response = await get(url);
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      data.forEach((service){
-        Map<String, dynamic> s = service;
-        services.add(serviceMapper.map(s));
+      data.forEach((service) {
+        services.add(serviceMapper.map(service as Map<String, dynamic>));
       });
     }
     return services;
