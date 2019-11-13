@@ -19,8 +19,8 @@ class _HomeState extends State<Home> {
     super.initState();
     _servicesService.getServices().then((services) {
       setState(() {
-        interiorServices = services.where((x) => x.categoryId == 1).toList();
-        exteriorServices = services.where((x) => x.categoryId == 2).toList();
+        interiorServices = services.where((s) => s.categoryId == 1).toList();
+        exteriorServices = services.where((s) => s.categoryId == 2).toList();
       });
     });
   }
