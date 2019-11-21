@@ -1,7 +1,13 @@
 import 'package:badges/badges.dart';
+import 'package:cleaners/models/planning.dart';
 import 'package:flutter/material.dart';
 
 class PlanningComponent extends StatelessWidget {
+
+  final Planning planning;
+
+  PlanningComponent({@required this.planning});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,7 +21,7 @@ class PlanningComponent extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Uzabakiliho Alfred'),
+                Text('Uzabakiliho Alfred : ${planning.id}'),
                 Badge(
                   badgeContent: Text(
                     '35€/h',
@@ -30,7 +36,7 @@ class PlanningComponent extends StatelessWidget {
                 ),
               ],
             ),
-            Divider(color: Theme.of(context).accentColor, thickness: 1.0)
+            Divider(color: Theme.of(context).accentColor, thickness: 1.0),
           ],
         ),
         leading: ClipOval(

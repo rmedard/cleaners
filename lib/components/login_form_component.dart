@@ -1,6 +1,5 @@
-import 'package:cleaners/Services/auth_service.dart';
 import 'package:cleaners/models/person.dart';
-import 'package:cleaners/notifiers/user_login_notifier.dart';
+import 'package:cleaners/notifiers/auth_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +10,6 @@ class LoginFormComponent extends StatefulWidget {
 
 class _LoginFormComponentState extends State<LoginFormComponent> {
   final _formKey = GlobalKey<FormState>();
-  AuthService _authService = new AuthService();
 
   String email;
   String password;
@@ -65,8 +63,13 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
                         content: Text('Processing Data...'),
                       ),
                     );
-                    loggedInPerson = await _authService.login(email, password);
-                    Provider.of<UserLoginNotifier>(context).getLoggedInUser();
+                    Provider.of<AuthNotifier>(context)
+                        .login(email, password)
+                        .whenComplete(() {
+                      loggedInPerson = Provider.of<AuthNotifier>(context)
+                          .loggedInUser
+                          .person;
+                    });
                   }
                 },
                 icon: Icon(

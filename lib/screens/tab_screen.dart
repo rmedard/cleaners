@@ -1,6 +1,4 @@
-import 'package:cleaners/notifiers/user_login_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'tabs/home.dart';
 import 'tabs/plannings.dart';
@@ -34,13 +32,10 @@ class _TabScreenState extends State<TabScreen> {
         ),
       ),
       body: SafeArea(
-        child: ChangeNotifierProvider(
-          builder: (context) => UserLoginNotifier(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
+              Expanded(
                 child: tabPages[_currentIndex].widget,
               ),
               BottomNavigationBar(
@@ -78,7 +73,6 @@ class _TabScreenState extends State<TabScreen> {
               ),
             ],
           ),
-        ),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:cleaners/components/login_form_component.dart';
 import 'package:cleaners/components/profile_component.dart';
-import 'package:cleaners/models/person.dart';
-import 'package:cleaners/notifiers/user_login_notifier.dart';
+import 'package:cleaners/notifiers/auth_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,12 +14,11 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserLoginNotifier>(
+    return Consumer<AuthNotifier>(
       builder: (context, notifier, child) {
-        Person loggedInUser = notifier.loggedInUser;
         return Container(
-            child: loggedInUser != null
-                ? ProfileComponent(person: loggedInUser)
+            child: notifier.loggedInUser != null
+                ? ProfileComponent(loggedInUser: notifier.loggedInUser)
                 : LoginFormComponent());
       },
     );

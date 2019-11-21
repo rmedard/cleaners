@@ -1,21 +1,22 @@
-import 'package:cleaners/Services/auth_service.dart';
+import 'package:cleaners/models/dto/logged_in_user.dart';
 import 'package:cleaners/models/person.dart';
-import 'package:cleaners/notifiers/user_login_notifier.dart';
+import 'package:cleaners/notifiers/auth_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfileComponent extends StatelessWidget {
-  final Person person;
+  final LoggedInUser loggedInUser;
 
-  const ProfileComponent({@required this.person});
+  const ProfileComponent({@required this.loggedInUser});
 
   @override
   Widget build(BuildContext context) {
+    Person person = loggedInUser.person;
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
         Card(
-          margin: EdgeInsets.only(top: 55.0, left: 20.0, right: 20.0),
+          margin: EdgeInsets.only(top: 55.0, left: 20.0, right: 20.0, bottom: 20.0),
           color: Colors.white,
           child: Padding(
             padding: EdgeInsets.only(top: 50.0),
@@ -54,8 +55,7 @@ class ProfileComponent extends StatelessWidget {
                     icon: Icon(Icons.exit_to_app),
                     color: Theme.of(context).primaryColor,
                     onPressed: () async {
-                      await new AuthService().logout();
-                      Provider.of<UserLoginNotifier>(context).getLoggedInUser();
+                      await Provider.of<AuthNotifier>(context).logout();
                     },
                     label: Text('Se deconnecter'),
                   ),

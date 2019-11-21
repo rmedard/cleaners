@@ -1,3 +1,4 @@
+import 'package:cleaners/Services/services_service.dart';
 import 'package:cleaners/models/service.dart';
 import 'package:cleaners/screens/service_screen.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 class ServiceComponent extends StatelessWidget {
   final Service service;
   final bool clickable;
+  final ServicesService _servicesService = ServicesService();
 
   ServiceComponent({@required this.service, @required this.clickable});
 
@@ -12,8 +14,10 @@ class ServiceComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if(clickable) {
-          Navigator.pushNamed(context, ServiceScreen.id, arguments: service.id);
+        if (clickable) {
+          _servicesService.getService(service).then((s) {
+            Navigator.pushNamed(context, ServiceScreen.id, arguments: s);
+          });
         }
       },
       child: Card(

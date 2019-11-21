@@ -1,15 +1,14 @@
 import 'package:cleaners/components/professional_component.dart';
 import 'package:cleaners/components/service_component.dart';
-import 'package:cleaners/models/professional.dart';
 import 'package:cleaners/models/service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ServiceScreen extends StatefulWidget {
   static const String id = 'service_screen';
-  final int serviceId;
+  final Service service;
 
-  ServiceScreen({this.serviceId});
+  ServiceScreen({this.service});
 
   @override
   _ServiceScreenState createState() => _ServiceScreenState();
@@ -21,15 +20,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Service dummyService = getDummyService();
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Service ${widget.serviceId}',
+          'Service ${widget.service.id}',
           style: TextStyle(
-            color: Theme
-                .of(context)
-                .accentColor,
+            color: Theme.of(context).accentColor,
           ),
         ),
       ),
@@ -37,7 +33,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
         child: Column(
           children: <Widget>[
             ServiceComponent(
-              service: dummyService, clickable: false,
+              service: widget.service,
+              clickable: false,
             ),
             Container(
               margin: EdgeInsets.only(top: 10.0),
@@ -48,23 +45,20 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     leading: Text(
                       'Date',
                       style: TextStyle(
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
+                          color: Theme.of(context).primaryColor,
                           fontSize: 25.0),
                     ),
                     title: Text(
                       DateFormat('d-MMM-y').format(selectedDateTime),
                       style: TextStyle(
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
+                          color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0),
                     ),
-                    trailing: Icon(Icons.calendar_today, color: Theme
-                        .of(context)
-                        .primaryColor,),
+                    trailing: Icon(
+                      Icons.calendar_today,
+                      color: Theme.of(context).primaryColor,
+                    ),
                     onTap: () async {
                       DateTime newDateTime = await showDatePicker(
                           context: context,
@@ -75,8 +69,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             return selectable.isAfter(DateTime.now());
                           });
                       setState(() {
-                        selectedDateTime =
-                        newDateTime == null ? selectedDateTime : newDateTime;
+                        selectedDateTime = newDateTime == null
+                            ? selectedDateTime
+                            : newDateTime;
                       });
                     },
                   ),
@@ -95,65 +90,24 @@ class _ServiceScreenState extends State<ServiceScreen> {
               ),
             ),
             Expanded(
-              child: Container(
-                child: ListView.separated(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  itemCount: dummyService.professionals.length,
-                  itemBuilder: (context, index) {
-                    return ProfessionalComponent(
-                      professional: dummyService.professionals[index],
-                    );
-                  },
-                  separatorBuilder: (context, index) =>
-                      Divider(
-                        height: 2.0,
-                        color: Theme
-                            .of(context)
-                            .primaryColor,
-                        thickness: 2.0,
-                      ),
+              child: ListView.separated(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                itemCount: widget.service.professionals.length,
+                itemBuilder: (context, index) {
+                  return ProfessionalComponent(
+                    professional: widget.service.professionals[index],
+                  );
+                },
+                separatorBuilder: (context, index) => Divider(
+                  height: 2.0,
+                  color: Theme.of(context).primaryColor,
+                  thickness: 2.0,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
     );
-  }
-
-  Service getDummyService() {
-    Service service = Service(
-        id: 1,
-        name: 'Service test',
-        description: 'Paralysis, rumour, and courage. '
-            'The uniqueness of your sorrows will listen safely '
-            'when you invent that bliss is the yogi.');
-    service.professionals = [
-      Professional(
-          id: 1,
-          firstName: 'Alfred',
-          lastName: 'UZABAKILIHO',
-          picture: 'assets/images/profile.png',
-          price: 4.0),
-      Professional(
-          id: 2,
-          firstName: 'Mariam',
-          lastName: 'Uwizeyimana',
-          picture: 'assets/images/profile.png',
-          price: 19.0),
-      Professional(
-          id: 3,
-          firstName: 'Jessica',
-          lastName: 'Alba',
-          picture: 'assets/images/profile.png',
-          price: 5.0),
-      Professional(
-          id: 4,
-          firstName: 'Halle',
-          lastName: 'Barry',
-          picture: 'assets/images/profile.png',
-          price: 15.0),
-    ];
-    return service;
   }
 }
