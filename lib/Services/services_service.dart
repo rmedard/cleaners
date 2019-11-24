@@ -32,8 +32,20 @@ class ServicesService {
       Map<String, dynamic> data = jsonDecode(response.body);
       List<dynamic> professionals = data['professionals'];
       professionals.forEach((p) {
-        service.professionals.add(professionalMapper.map(p as Map<String, dynamic>));
+        service.professionals
+            .add(professionalMapper.map(p as Map<String, dynamic>));
       });
+    }
+    return service;
+  }
+
+  Future<Service> getServiceById(int serviceId) async {
+    var url = '$apiUrl/services/$serviceId';
+    Response response = await get(url);
+    Service service;
+    if (response.statusCode == 200) {
+      service =
+          Service.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
     }
     return service;
   }

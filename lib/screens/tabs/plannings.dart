@@ -1,6 +1,6 @@
 import 'package:cleaners/Services/plannings_service.dart';
 import 'package:cleaners/components/planning_component.dart';
-import 'package:cleaners/models/planning.dart';
+import 'package:cleaners/models/dto/planning_dto.dart';
 import 'package:flutter/material.dart';
 
 class Plannings extends StatefulWidget {
@@ -10,15 +10,13 @@ class Plannings extends StatefulWidget {
 
 class _PlanningsState extends State<Plannings> {
   final PlanningsService _planningsService = PlanningsService();
-  List<Planning> plannings = [];
+  List<PlanningDto> plannings = [];
 
   @override
   void initState() {
     super.initState();
     _planningsService.getPlannings().then((plans) {
-      setState(() {
-        plannings = plans;
-      });
+      plannings = plans;
     });
   }
 
@@ -27,7 +25,7 @@ class _PlanningsState extends State<Plannings> {
     return ListView.separated(
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return PlanningComponent(planning: plannings[index]);
+        return PlanningComponent(planningDto: plannings[index]);
       },
       separatorBuilder: (context, index) => Divider(height: 3.0),
       itemCount: plannings.length,

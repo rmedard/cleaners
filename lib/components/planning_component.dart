@@ -1,19 +1,23 @@
 import 'package:badges/badges.dart';
+import 'package:cleaners/models/dto/planning_dto.dart';
 import 'package:cleaners/models/planning.dart';
+import 'package:cleaners/utils/date_utils.dart';
 import 'package:flutter/material.dart';
 
 class PlanningComponent extends StatelessWidget {
+  final PlanningDto planningDto;
 
-  final Planning planning;
-
-  PlanningComponent({@required this.planning});
+  PlanningComponent({@required this.planningDto});
 
   @override
   Widget build(BuildContext context) {
+    Planning planning = planningDto.planning;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
-        border: Border.all(color: Colors.red, width: 2.0),
+        border: planning.startTime().isBefore(DateTime.now())
+            ? Border.all(color: Colors.red, width: 2.0)
+            : Border.all(color: Colors.green, width: 2.0),
       ),
       child: ListTile(
         title: Column(
@@ -21,10 +25,10 @@ class PlanningComponent extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Uzabakiliho Alfred : ${planning.id}'),
+                Text('${planningDto.professional.firstName} ${planningDto.professional.lastName}'),
                 Badge(
                   badgeContent: Text(
-                    '35€/h',
+                    '${planningDto.professional.price}€/h',
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w700),
@@ -51,7 +55,7 @@ class PlanningComponent extends StatelessWidget {
                   'Service',
                   style: TextStyle(color: Theme.of(context).accentColor),
                 ),
-                Text('Jardinage')
+                Text('${planningDto.service.name}')
               ],
             ),
             Row(
@@ -61,7 +65,10 @@ class PlanningComponent extends StatelessWidget {
                   'Date',
                   style: TextStyle(color: Theme.of(context).accentColor),
                 ),
-                Text('10-12-2019, 10:00 - 11:00')
+                Text(
+                    '${DateUtils.dateToString(planning.startTime(), "dd-MM-yyyy")}, '
+                    '${DateUtils.dateToString(planning.startTime(), "HH:mm")} - '
+                    '${DateUtils.dateToString(planning.endTime(), "HH:mm")}')
               ],
             ),
           ],

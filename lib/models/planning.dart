@@ -27,4 +27,12 @@ class Planning {
         startHour = json['start_hour'],
         endHour = json['end_hour'],
         statusId = json['status_id'];
+
+  DateTime startTime() {
+    return DateTime.parse("$date${startHour.substring(startHour.indexOf('T'))}");
+  }
+
+  DateTime endTime() {
+    return DateTime.parse("$date${endHour.substring(endHour.indexOf('T'))}");
+  }
 }

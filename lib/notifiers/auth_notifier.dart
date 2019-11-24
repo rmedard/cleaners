@@ -15,11 +15,11 @@ class AuthNotifier extends ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     var url = '$kApiUrl/personas/sign_in';
-    _loggedInUser = LoggedInUser();
     Response response =
         await post(url, body: {'email': email, 'password': password});
     if (response.statusCode == 200) {
       Map<String, dynamic> user = jsonDecode(response.body);
+      _loggedInUser = LoggedInUser();
       _loggedInUser.person = _personMapper.map(user['data']);
       _loggedInUser.headers = new Map();
       _loggedInUser.headers.putIfAbsent(kHeaders[headerType.accessToken], () {
@@ -37,13 +37,13 @@ class AuthNotifier extends ChangeNotifier {
       _loggedInUser.headers.putIfAbsent(kHeaders[headerType.uid], () {
         return response.headers[kHeaders[headerType.uid]];
       });
-      _storage.write(
-          key: kLoggedInUser, value: jsonEncode(_loggedInUser.toJson()));
+      _storage
+          .write(key: kLoggedInUser, value: jsonEncode(_loggedInUser.toJson()))
+          .whenComplete(() => notifyListeners());
     } else {
-      _storage.delete(key: kLoggedInUser);
       _loggedInUser = null;
+      _storage.delete(key: kLoggedInUser).whenComplete(() => notifyListeners());
     }
-    notifyListeners();
   }
 
   Future<void> logout() {
