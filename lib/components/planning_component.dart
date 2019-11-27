@@ -16,8 +16,8 @@ class PlanningComponent extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         border: planning.startTime().isBefore(DateTime.now())
-            ? Border.all(color: Colors.red, width: 2.0)
-            : Border.all(color: Colors.green, width: 2.0),
+            ? Border.all(color: Colors.red, width: 3.0)
+            : Border.all(color: Colors.green, width: 3.0),
       ),
       child: ListTile(
         title: Column(
@@ -25,7 +25,8 @@ class PlanningComponent extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('${planningDto.professional.firstName} ${planningDto.professional.lastName}'),
+                Text(
+                    '${planningDto.professional.firstName} ${planningDto.professional.lastName}'),
                 Badge(
                   badgeContent: Text(
                     '${planningDto.professional.price}€/h',
@@ -44,7 +45,11 @@ class PlanningComponent extends StatelessWidget {
           ],
         ),
         leading: ClipOval(
-          child: Image.asset('assets/images/profile.png'),
+          child: planningDto.professional.picture == null
+              ? Image.asset('assets/images/profile.png',
+                  width: 55.0, height: 55.0)
+              : Image.network(planningDto.professional.picture,
+                  width: 55.0, height: 55.0, fit: BoxFit.fitHeight),
         ),
         subtitle: Column(
           children: <Widget>[

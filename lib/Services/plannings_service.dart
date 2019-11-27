@@ -16,36 +16,24 @@ class PlanningsService {
 
   Future<List<PlanningDto>> getPlannings() async {
     var url = '$kApiUrl/plannings';
-    LoggedInUser loggedInUser = await _authService.getLoggedInUser();
     List<PlanningDto> wholePlannings = [];
+    LoggedInUser loggedInUser = await _authService.getLoggedInUser();
     if (loggedInUser != null) {
-      final response = await get(url, headers: loggedInUser.headers);
+      Response response = await get(url, headers: loggedInUser.headers);
       if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(response.body);
-        List<Planning> plannings =
-            data.map((dynamic item) => Planning.fromJson(item)).toList();
-        Set<int> serviceIds =
-            plannings.map((Planning plan) => plan.serviceId).toSet();
-        serviceIds.forEach((id) async {
-          Service service = await _servicesService.getServiceById(id);
-          print('Service found: ${service.name}');
-          plannings
-              .where((pl) => pl.serviceId == service.id)
-              .forEach((planning) {
-            Professional professional = service.professionals
-                .firstWhere((p) => p.id == planning.professionalId);
-            print('Prof found: ${professional.lastName}');
-            wholePlannings.add(PlanningDto(
-                planning: planning,
-                service: service,
-                professional: professional));
+        List<Planning> plannings = data.map((dynamic item) => Planning.fromJson(item)).toList();
+        Set<int> serviceIds = plannings.map((Planning plan) => plan.serviceId).toSet();
+        for (int serviceId in serviceIds) {
+          Service service = await _servicesService.getServiceById(serviceId);
+          plannings.where((planning) => planning.serviceId == serviceId).forEach((planning) {
+            Professional professional = service.professionals.firstWhere((p) => p.id == planning.professionalId);
+            wholePlannings.add(PlanningDto(planning: planning, service: service, professional: professional));
           });
-        });
-        wholePlannings.sort(
-            (a, b) => b.planning.startTime().compareTo(a.planning.startTime()));
+        }
+        wholePlannings.sort((a, b) => b.planning.startTime().compareTo(a.planning.startTime()));
       }
     }
-//    print('Plannings size: ${wholePlannings.length}');
     return wholePlannings;
   }
 }
