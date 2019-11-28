@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cleaners/models/dto/planning_dto.dart';
 import 'package:cleaners/models/planning.dart';
 import 'package:cleaners/utils/date_utils.dart';
@@ -14,7 +15,11 @@ class PlanningComponent extends StatelessWidget {
     Planning planning = planningDto.planning;
     var photo = planningDto.professional.picture == null
         ? AssetImage('assets/images/profile.png')
-        : NetworkImage(planningDto.professional.picture);
+        : CachedNetworkImage(
+            imageUrl: planningDto.professional.picture,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          );
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
