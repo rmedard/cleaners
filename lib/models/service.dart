@@ -13,7 +13,10 @@ class Service {
       : id = json['id'],
         name = json['name'],
         description = json['description'],
-        professionals = (json['professionals'] as List<dynamic>)
-            .map((p) => Professional.fromJson(p as Map<String, dynamic>))
-            .toList();
+        categoryId = json['category_id'],
+        professionals = json['professionals'] == null
+            ? []
+            : (json['professionals'] as List<dynamic>)
+                .map((p) => Professional.fromJson(p as Map<String, dynamic>))
+                .toList();
 }

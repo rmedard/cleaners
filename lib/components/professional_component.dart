@@ -9,6 +9,9 @@ class ProfessionalComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var photo = professional.picture == null
+        ? AssetImage('assets/images/profile.png')
+        : NetworkImage(professional.picture);
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
@@ -29,7 +32,8 @@ class ProfessionalComponent extends StatelessWidget {
             style: TextStyle(color: Theme.of(context).primaryColor),
           ),
           leading: CircleAvatar(
-            child: Image.asset('assets/images/profile.png'),
+            backgroundImage: photo,
+            maxRadius: 25.0,
           ),
           trailing: Chip(
             label: Text('${professional.price} €/h'),

@@ -12,6 +12,9 @@ class PlanningComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Planning planning = planningDto.planning;
+    var photo = planningDto.professional.picture == null
+        ? AssetImage('assets/images/profile.png')
+        : NetworkImage(planningDto.professional.picture);
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
@@ -20,6 +23,7 @@ class PlanningComponent extends StatelessWidget {
             : Border.all(color: Colors.green, width: 3.0),
       ),
       child: ListTile(
+        contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 5.0, 5.0),
         title: Column(
           children: <Widget>[
             Row(
@@ -44,12 +48,9 @@ class PlanningComponent extends StatelessWidget {
             Divider(color: Theme.of(context).accentColor, thickness: 1.0),
           ],
         ),
-        leading: ClipOval(
-          child: planningDto.professional.picture == null
-              ? Image.asset('assets/images/profile.png',
-                  width: 55.0, height: 55.0)
-              : Image.network(planningDto.professional.picture,
-                  width: 55.0, height: 55.0, fit: BoxFit.fitHeight),
+        leading: CircleAvatar(
+          backgroundImage: photo,
+          maxRadius: 25.0,
         ),
         subtitle: Column(
           children: <Widget>[
@@ -82,3 +83,23 @@ class PlanningComponent extends StatelessWidget {
     );
   }
 }
+
+//ClipOval(
+//child: planningDto.professional.picture == null
+//? Image.asset('assets/images/profile.png',
+//width: 55.0, height: 55.0)
+//: Image.network(planningDto.professional.picture,
+//width: 55.0, height: 55.0, fit: BoxFit.fitHeight),
+//)
+
+//Container(
+//width: 59.0,
+//decoration: BoxDecoration(
+//shape: BoxShape.circle,
+//image: DecorationImage(
+//fit: BoxFit.cover,
+//image: planningDto.professional.picture == null
+//? AssetImage('assets/images/profile.png')
+//: NetworkImage(planningDto.professional.picture)),
+//),
+//)

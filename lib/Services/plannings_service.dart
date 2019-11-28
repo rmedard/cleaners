@@ -16,7 +16,7 @@ class PlanningsService {
 
   Future<List<PlanningDto>> getPlannings() async {
     var url = '$kApiUrl/plannings';
-    List<PlanningDto> wholePlannings = [];
+    List<PlanningDto> planningsDtos = [];
     LoggedInUser loggedInUser = await _authService.getLoggedInUser();
     if (loggedInUser != null) {
       Response response = await get(url, headers: loggedInUser.headers);
@@ -28,12 +28,12 @@ class PlanningsService {
           Service service = await _servicesService.getServiceById(serviceId);
           plannings.where((planning) => planning.serviceId == serviceId).forEach((planning) {
             Professional professional = service.professionals.firstWhere((p) => p.id == planning.professionalId);
-            wholePlannings.add(PlanningDto(planning: planning, service: service, professional: professional));
+            planningsDtos.add(PlanningDto(planning: planning, service: service, professional: professional));
           });
         }
-        wholePlannings.sort((a, b) => b.planning.startTime().compareTo(a.planning.startTime()));
+        planningsDtos.sort((a, b) => b.planning.startTime().compareTo(a.planning.startTime()));
       }
     }
-    return wholePlannings;
+    return planningsDtos;
   }
 }
