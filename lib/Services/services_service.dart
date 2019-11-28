@@ -24,25 +24,21 @@ class ServicesService {
   Future<Service> getService(Service service) async {
     var url = '$apiUrl/services/${service.id}';
     Response response = await get(url);
+    Service serviceObj;
     if (response.statusCode == 200) {
-      service.professionals = [];
-      Map<String, dynamic> data = jsonDecode(response.body);
-      List<dynamic> professionals = data['professionals'];
-      professionals.forEach((p) {
-        service.professionals.add(Professional.fromJson(p as Map<String, dynamic>));
-      });
+      serviceObj = Service.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      serviceObj.categoryId = service.categoryId;
     }
-    return service;
+    return serviceObj;
   }
 
   Future<Service> getServiceById(int serviceId) async {
     var url = '$apiUrl/services/$serviceId';
     Response response = await get(url);
-    Service service;
     if (response.statusCode == 200) {
-      service =
-          Service.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      return Service.fromJson(
+          jsonDecode(response.body) as Map<String, dynamic>);
     }
-    return service;
+    return null;
   }
 }
