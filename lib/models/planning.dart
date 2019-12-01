@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Planning {
   int id;
@@ -49,6 +49,16 @@ class Planning {
         'end_hour': endHour,
         'status_id': statusId
       };
+
+  Map<String, dynamic> toNewJson() => {
+    'professional_id': professionalId,
+    'customer_id': customerId,
+    'service_id': serviceId,
+    'date': date,
+    'start_hour': startHour,
+    'end_hour': endHour,
+    'status_id': statusId
+  };
 
   DateTime startTime() {
     return DateTime.parse(

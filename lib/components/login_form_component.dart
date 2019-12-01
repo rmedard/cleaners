@@ -1,6 +1,7 @@
 import 'package:cleaners/models/dto/logged_in_user.dart';
 import 'package:cleaners/models/person.dart';
 import 'package:cleaners/notifiers/auth_notifier.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -78,27 +79,25 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
                           Provider.of<AuthNotifier>(context).loggedInUser;
                       if (loggedInUser != null) {
                         loggedInPerson = loggedInUser.person;
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Bienvenu ${loggedInPerson.firstName}...',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            duration: Duration(seconds: 4),
-                            backgroundColor: Colors.green,
+                        Flushbar(
+                          message: 'Bienvenu ${loggedInPerson.firstName}...',
+                          icon: Icon(
+                            Icons.check_circle_outline,
+                            color: Colors.green,
                           ),
-                        );
+                          duration: Duration(seconds: 4),
+                          leftBarIndicatorColor: Colors.green,
+                        ).show(context);
                       } else {
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Oops, Connexion échouée...',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            duration: Duration(seconds: 4),
-                            backgroundColor: Colors.red,
+                        Flushbar(
+                          message: 'Oops, Connexion échouée...',
+                          icon: Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
                           ),
-                        );
+                          duration: Duration(seconds: 4),
+                          leftBarIndicatorColor: Colors.red,
+                        ).show(context);
                       }
                     });
                   }

@@ -84,23 +84,3 @@ class PlanningComponent extends StatelessWidget {
     );
   }
 }
-
-//ClipOval(
-//child: planningDto.professional.picture == null
-//? Image.asset('assets/images/profile.png',
-//width: 55.0, height: 55.0)
-//: Image.network(planningDto.professional.picture,
-//width: 55.0, height: 55.0, fit: BoxFit.fitHeight),
-//)
-
-//Container(
-//width: 59.0,
-//decoration: BoxDecoration(
-//shape: BoxShape.circle,
-//image: DecorationImage(
-//fit: BoxFit.cover,
-//image: planningDto.professional.picture == null
-//? AssetImage('assets/images/profile.png')
-//: NetworkImage(planningDto.professional.picture)),
-//),
-//)

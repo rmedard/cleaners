@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cleaners/Services/auth_service.dart';
 import 'package:cleaners/Services/services_service.dart';
 import 'package:cleaners/constants.dart';
+import 'package:cleaners/models/dto/create_planning_dto.dart';
 import 'package:cleaners/models/dto/logged_in_user.dart';
 import 'package:cleaners/models/dto/planning_dto.dart';
 import 'package:cleaners/models/planning.dart';
@@ -47,16 +48,21 @@ class PlanningsService {
   }
 
   Future<bool> createPlanning(Planning planning) async {
-    var url = '$kApiUrl/plannings';
     LoggedInUser loggedInUser = await _authService.getLoggedInUser();
+    bool planningCreated = false;
     if (loggedInUser != null) {
+      String url = '$kApiUrl/plannings';
+      Map<String, String> headers = loggedInUser.headers;
+      headers.putIfAbsent('Content-Type', () => 'application/json');
       Response response = await post(url,
-          headers: loggedInUser.headers,
-          body: {'planning': '[${planning.toJson()}]'});
+          headers: headers,
+          body: jsonEncode(CreatePlanningDto(plannings: [planning])));
       if (response.statusCode == 201) {
-        return true;
+        planningCreated = true;
       }
+    } else {
+      print('Logged in user nt found');
     }
-    return false;
+    return planningCreated;
   }
 }

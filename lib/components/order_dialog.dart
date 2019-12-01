@@ -81,7 +81,7 @@ class OrderDialog extends StatelessWidget {
                       ),
                     ),
                     FlatButton(
-                      onPressed: onCreatePlanning(planningDto.planning),
+                      onPressed: onCreatePlanning,
                       child: Text(
                         'Confirmer',
                         style: TextStyle(color: Theme.of(context).primaryColor),
