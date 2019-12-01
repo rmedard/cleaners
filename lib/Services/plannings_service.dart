@@ -60,8 +60,6 @@ class PlanningsService {
       if (response.statusCode == 201) {
         planningCreated = true;
       }
-    } else {
-      print('Logged in user nt found');
     }
     return planningCreated;
   }
