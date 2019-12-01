@@ -49,7 +49,6 @@ class PlanningsService {
 
   Future<bool> createPlanning(Planning planning) async {
     LoggedInUser loggedInUser = await _authService.getLoggedInUser();
-    bool planningCreated = false;
     if (loggedInUser != null) {
       String url = '$kApiUrl/plannings';
       Map<String, String> headers = loggedInUser.headers;
@@ -58,9 +57,9 @@ class PlanningsService {
           headers: headers,
           body: jsonEncode(CreatePlanningDto(plannings: [planning])));
       if (response.statusCode == 201) {
-        planningCreated = true;
+        return true;
       }
     }
-    return planningCreated;
+    return false;
   }
 }
