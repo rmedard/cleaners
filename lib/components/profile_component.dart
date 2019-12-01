@@ -71,7 +71,7 @@ class ProfileComponent extends StatelessWidget {
           ),
           child: CircleAvatar(
             radius: 50.0,
-            backgroundImage: person.picture.isEmpty
+            backgroundImage: person.picture == null || person.picture.isEmpty
                 ? AssetImage('assets/images/profile.png')
                 : NetworkImage(person.picture),
             backgroundColor: Colors.white,

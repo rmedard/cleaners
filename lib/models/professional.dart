@@ -14,4 +14,12 @@ class Professional {
         lastName = json['last_name'],
         picture = json['picture'],
         price = json['price'];
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'first_name': firstName,
+        'last_name': lastName,
+        'picture': picture,
+        'price': price
+      };
 }

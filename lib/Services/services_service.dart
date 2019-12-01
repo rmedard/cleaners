@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cleaners/constants.dart';
-import 'package:cleaners/models/professional.dart';
 import 'package:cleaners/models/service.dart';
 import 'package:http/http.dart';
 

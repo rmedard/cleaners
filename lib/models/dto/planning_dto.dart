@@ -9,4 +9,9 @@ class PlanningDto {
 
   PlanningDto({this.planning, this.professional, this.service});
 
+  Map<String, dynamic> toJson() => {
+    'planning': planning.toJson(),
+    'professional': professional.toJson(),
+    'service': service.toJson()
+  };
 }

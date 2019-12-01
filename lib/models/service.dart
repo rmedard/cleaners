@@ -19,4 +19,12 @@ class Service {
             : (json['professionals'] as List<dynamic>)
                 .map((p) => Professional.fromJson(p as Map<String, dynamic>))
                 .toList();
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'description': description,
+        'category_id': categoryId,
+        'professionals': professionals
+      };
 }

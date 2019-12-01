@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class Planning {
   int id;
   int professionalId;
@@ -18,6 +20,15 @@ class Planning {
       this.endHour,
       this.statusId});
 
+  Planning.toCreate(
+      {@required this.professionalId,
+      @required this.customerId,
+      @required this.serviceId,
+      @required this.date,
+      @required this.startHour,
+      @required this.endHour,
+      this.statusId = 1});
+
   Planning.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         professionalId = json['professional_id'],
@@ -28,8 +39,20 @@ class Planning {
         endHour = json['end_hour'],
         statusId = json['status_id'];
 
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'professional_id': professionalId,
+        'customer_id': customerId,
+        'service_id': serviceId,
+        'date': date,
+        'start_hour': startHour,
+        'end_hour': endHour,
+        'status_id': statusId
+      };
+
   DateTime startTime() {
-    return DateTime.parse("$date${startHour.substring(startHour.indexOf('T'))}");
+    return DateTime.parse(
+        "$date${startHour.substring(startHour.indexOf('T'))}");
   }
 
   DateTime endTime() {

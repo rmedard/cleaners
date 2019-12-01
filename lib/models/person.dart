@@ -27,27 +27,27 @@ class Person {
   Person.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         email = json['email'],
-        typeId = json['typeId'],
-        firstName = json['firstName'],
-        lastName = json['lastName'],
-        phoneNumber = json['phoneNumber'],
-        plotNumber = json['plotNumber'],
-        streetName = json['streetName'],
-        cityName = json['cityName'],
-        postCode = json['postCode'],
+        typeId = json['type_id'],
+        firstName = json['first_name'],
+        lastName = json['last_name'],
+        phoneNumber = json['phone_number'],
+        plotNumber = json['plot_number'],
+        streetName = json['street_name'],
+        cityName = json['city_name'],
+        postCode = json['post_code'],
         picture = json['picture'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'email': email,
-        'typeId': typeId,
-        'firstName': firstName,
-        'lastName': lastName,
-        'phoneNumber': phoneNumber,
-        'plotNumber': plotNumber,
-        'streetName': streetName,
-        'cityName': cityName,
-        'postCode': postCode,
+        'type_id': typeId,
+        'first_name': firstName,
+        'last_name': lastName,
+        'phone_number': phoneNumber,
+        'plot_number': plotNumber,
+        'street_name': streetName,
+        'city_name': cityName,
+        'post_code': postCode,
         'picture': picture
       };
 }

@@ -1,6 +1,12 @@
+import 'package:cleaners/Services/auth_service.dart';
 import 'package:cleaners/components/professional_component.dart';
 import 'package:cleaners/components/service_component.dart';
+import 'package:cleaners/constants.dart';
+import 'package:cleaners/models/dto/logged_in_user.dart';
+import 'package:cleaners/models/dto/planning_dto.dart';
+import 'package:cleaners/models/planning.dart';
 import 'package:cleaners/models/service.dart';
+import 'package:cleaners/utils/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,11 +21,27 @@ class ServiceScreen extends StatefulWidget {
 }
 
 class _ServiceScreenState extends State<ServiceScreen> {
+  AuthService _authService = AuthService();
   RangeValues _sliderValues = RangeValues(8, 18);
-  DateTime selectedDateTime = DateTime.now().add(Duration(hours: 1));
+  DateTime selectedDateTime = DateUtils.soonestSelectableDate();
+  LoggedInUser loggedInUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _authService.getLoggedInUser().then((user) {
+      setState(() {
+        loggedInUser = user;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    int year = selectedDateTime.year;
+    int month = selectedDateTime.month;
+    int day = selectedDateTime.day;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -49,7 +71,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           fontSize: 25.0),
                     ),
                     title: Text(
-                      DateFormat('d-MMM-y').format(selectedDateTime),
+                      DateFormat('d-MMMM-y').format(selectedDateTime),
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold,
@@ -63,10 +85,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       DateTime newDateTime = await showDatePicker(
                           context: context,
                           initialDate: selectedDateTime,
-                          firstDate: DateTime(2019),
-                          lastDate: DateTime(2030),
+                          firstDate: DateTime(DateTime.now().year),
+                          lastDate: DateTime(DateTime.now().year + 2),
                           selectableDayPredicate: (DateTime selectable) {
-                            return selectable.isAfter(DateTime.now());
+                            return DateUtils.isBookable(selectable);
                           });
                       setState(() {
                         selectedDateTime = newDateTime == null
@@ -95,7 +117,26 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 itemCount: widget.service.professionals.length,
                 itemBuilder: (context, index) {
                   return ProfessionalComponent(
-                    professional: widget.service.professionals[index],
+                    planningDto: PlanningDto(
+                        professional: widget.service.professionals[index],
+                        planning: Planning.toCreate(
+                            professionalId:
+                                widget.service.professionals[index].id,
+                            customerId: loggedInUser == null
+                                ? 0
+                                : loggedInUser.person.id,
+                            serviceId: widget.service.id,
+                            date:
+                                '${DateUtils.dateToString(selectedDateTime, 'yyyy-MM-dd')}T00:00:00.000',
+                            startHour: DateUtils.dateToString(
+                                DateTime(year, month, day,
+                                    _sliderValues.start.truncate(), 0, 0),
+                                kMainDateTimeFormat),
+                            endHour: DateUtils.dateToString(
+                                DateTime(year, month, day,
+                                    _sliderValues.end.truncate(), 0, 0),
+                                kMainDateTimeFormat)),
+                        service: widget.service),
                   );
                 },
                 separatorBuilder: (context, index) => Divider(

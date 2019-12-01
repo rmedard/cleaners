@@ -15,11 +15,7 @@ class PlanningComponent extends StatelessWidget {
     Planning planning = planningDto.planning;
     var photo = planningDto.professional.picture == null
         ? AssetImage('assets/images/profile.png')
-        : CachedNetworkImage(
-            imageUrl: planningDto.professional.picture,
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          );
+        : CachedNetworkImageProvider(planningDto.professional.picture);
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,

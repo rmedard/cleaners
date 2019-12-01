@@ -22,18 +22,41 @@ class PlanningsService {
       Response response = await get(url, headers: loggedInUser.headers);
       if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(response.body);
-        List<Planning> plannings = data.map((dynamic item) => Planning.fromJson(item)).toList();
-        Set<int> serviceIds = plannings.map((Planning plan) => plan.serviceId).toSet();
+        List<Planning> plannings =
+            data.map((dynamic item) => Planning.fromJson(item)).toList();
+        Set<int> serviceIds =
+            plannings.map((Planning plan) => plan.serviceId).toSet();
         for (int serviceId in serviceIds) {
           Service service = await _servicesService.getServiceById(serviceId);
-          plannings.where((planning) => planning.serviceId == serviceId).forEach((planning) {
-            Professional professional = service.professionals.firstWhere((p) => p.id == planning.professionalId);
-            planningsDtos.add(PlanningDto(planning: planning, service: service, professional: professional));
+          plannings
+              .where((planning) => planning.serviceId == serviceId)
+              .forEach((planning) {
+            Professional professional = service.professionals
+                .firstWhere((p) => p.id == planning.professionalId);
+            planningsDtos.add(PlanningDto(
+                planning: planning,
+                service: service,
+                professional: professional));
           });
         }
-        planningsDtos.sort((a, b) => b.planning.startTime().compareTo(a.planning.startTime()));
+        planningsDtos.sort(
+            (a, b) => b.planning.startTime().compareTo(a.planning.startTime()));
       }
     }
     return planningsDtos;
+  }
+
+  Future<bool> createPlanning(Planning planning) async {
+    var url = '$kApiUrl/plannings';
+    LoggedInUser loggedInUser = await _authService.getLoggedInUser();
+    if (loggedInUser != null) {
+      Response response = await post(url,
+          headers: loggedInUser.headers,
+          body: {'planning': '[${planning.toJson()}]'});
+      if (response.statusCode == 201) {
+        return true;
+      }
+    }
+    return false;
   }
 }

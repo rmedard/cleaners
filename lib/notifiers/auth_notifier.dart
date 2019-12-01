@@ -19,7 +19,7 @@ class AuthNotifier extends ChangeNotifier {
     if (response.statusCode == 200) {
       Map<String, dynamic> user = jsonDecode(response.body);
       _loggedInUser = LoggedInUser();
-      _loggedInUser.person = Person.fromJson(user);
+      _loggedInUser.person = Person.fromJson(user['data']);
       _loggedInUser.headers = new Map();
       _loggedInUser.headers.putIfAbsent(kHeaders[headerType.accessToken], () {
         return response.headers[kHeaders[headerType.accessToken]];
