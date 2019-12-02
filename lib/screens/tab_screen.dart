@@ -32,6 +32,17 @@ class _TabScreenState extends State<TabScreen> {
         ),
       ),
       body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).primaryColor,
+                Theme.of(context).accentColor
+              ],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+            ),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -49,7 +60,9 @@ class _TabScreenState extends State<TabScreen> {
                   );
                 },
                 currentIndex: _currentIndex,
-                selectedItemColor: Color(0xFFFED330),
+                selectedItemColor: Theme.of(context).accentColor,
+                backgroundColor: Theme.of(context).primaryColor,
+                unselectedItemColor: Colors.white70,
                 items: [
                   BottomNavigationBarItem(
                     icon: Icon(
@@ -73,6 +86,7 @@ class _TabScreenState extends State<TabScreen> {
               ),
             ],
           ),
+        ),
       ),
     );
   }

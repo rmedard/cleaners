@@ -33,7 +33,8 @@ class _HomeState extends State<Home> {
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, ServicesListScreen.id,
-                arguments: ServiceArgument(serviceType: 'interieur', services: interiorServices));
+                arguments: ServiceArgument(
+                    serviceType: 'interieur', services: interiorServices));
           },
           child: Container(
             child: Padding(
@@ -52,17 +53,24 @@ class _HomeState extends State<Home> {
                         child: Text(
                           'Interieur',
                           style: TextStyle(
-                              fontSize: 50.0, fontWeight: FontWeight.bold),
+                              fontSize: 50.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                    color: Theme.of(context).primaryColor,
+                                    blurRadius: 15.0)
+                              ]),
                         ),
                       ),
                       Container(
-                        color: Color(0xAAFED330),
+                        color: Color(0xEF222428),
                         child: Center(
                           child: Text(
                             '${interiorServices.length} Services',
                             style: TextStyle(
-                                fontSize: 25.0,
-                                color: Colors.black,
+                                fontSize: 30.0,
+                                color: Theme.of(context).accentColor,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -77,7 +85,8 @@ class _HomeState extends State<Home> {
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, ServicesListScreen.id,
-                arguments: ServiceArgument(serviceType: 'exterieur', services: exteriorServices));
+                arguments: ServiceArgument(
+                    serviceType: 'exterieur', services: exteriorServices));
           },
           child: Container(
             child: Padding(
@@ -96,17 +105,24 @@ class _HomeState extends State<Home> {
                         child: Text(
                           'Exterieur',
                           style: TextStyle(
-                              fontSize: 50.0, fontWeight: FontWeight.bold),
+                              fontSize: 50.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                    color: Theme.of(context).primaryColor,
+                                    blurRadius: 15.0)
+                              ]),
                         ),
                       ),
                       Container(
-                        color: Color(0xAAFED330),
+                        color: Color(0xEF222428),
                         child: Center(
                           child: Text(
                             '${exteriorServices.length} Services',
                             style: TextStyle(
-                                fontSize: 25.0,
-                                color: Colors.black,
+                                fontSize: 30.0,
+                                color: Theme.of(context).accentColor,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),

@@ -20,13 +20,27 @@ class ServicesListScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: ListView.builder(
-          itemCount: _serviceArgument.services.length,
-          itemBuilder: (context, index) {
-            return ServiceComponent(
-              service: _serviceArgument.services[index], clickable: true,
-            );
-          },
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).primaryColor,
+                Theme.of(context).accentColor
+              ],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+            ),
+          ),
+          child: ListView.builder(
+            padding: EdgeInsets.only(bottom: 15.0),
+            itemCount: _serviceArgument.services.length,
+            itemBuilder: (context, index) {
+              return ServiceComponent(
+                service: _serviceArgument.services[index],
+                clickable: true,
+              );
+            },
+          ),
         ),
       ),
     );

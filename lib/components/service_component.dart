@@ -36,7 +36,7 @@ class ServiceComponent extends StatelessWidget {
                   ),
                   color: Theme.of(context).primaryColor),
               child: ListTile(
-                leading: Icon(Icons.done_all),
+                leading: Icon(Icons.done_all, color: Theme.of(context).accentColor,),
                 title: Text(
                   service.name,
                   style: TextStyle(

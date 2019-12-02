@@ -10,16 +10,42 @@ import 'package:provider/provider.dart';
 void main() => runApp(HouseCleaners());
 
 class HouseCleaners extends StatelessWidget {
+  static final RangeThumbSelector _customRangeThumbSelector = (
+    TextDirection textDirection,
+    RangeValues values,
+    double tapValue,
+    Size thumbSize,
+    Size trackSize,
+    double dx,
+  ) {
+    final double start = (tapValue - values.start).abs();
+    final double end = (tapValue - values.end).abs();
+    return start < end ? Thumb.start : Thumb.end;
+  };
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       builder: (context) => AuthNotifier(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark().copyWith(
+        theme: ThemeData(
           primaryColor: Color(0xFF222428),
           scaffoldBackgroundColor: Color(0xFFFED330),
           accentColor: Color(0xFFFED330),
+          textSelectionHandleColor: Color(0xFFFED330),
+          toggleableActiveColor: Color(0xFFFED330),
+          buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          bottomAppBarTheme: BottomAppBarTheme(color: Color(0xFF222428)),
+          sliderTheme: SliderThemeData(
+            thumbSelector: _customRangeThumbSelector,
+            activeTrackColor: Color(0xFF222428),
+            activeTickMarkColor: Color(0xFFFED330),
+            thumbColor: Color(0xFF222428),
+            overlayColor: Color(0x1D222428),
+            valueIndicatorColor: Color(0xFF222428),
+            inactiveTrackColor: Color(0xFFFED330),
+          ),
         ),
         initialRoute: TabScreen.id,
         home: TabScreen(),

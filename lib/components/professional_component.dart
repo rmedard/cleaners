@@ -26,7 +26,8 @@ class ProfessionalComponent extends StatelessWidget {
         String message = success
             ? 'Commande passée acess succès'
             : 'Oops, commande échouée...';
-        IconData iconData = success ? Icons.check_circle_outline : Icons.error_outline;
+        IconData iconData =
+            success ? Icons.check_circle_outline : Icons.error_outline;
         Color color = success ? Colors.green : Colors.red;
         Flushbar(
           message: message,
@@ -66,6 +67,7 @@ class ProfessionalComponent extends StatelessWidget {
     }
 
     return Slidable(
+      key: Key('${planningDto.professional.id}'),
       controller: slidableController,
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
@@ -91,9 +93,13 @@ class ProfessionalComponent extends StatelessWidget {
             maxRadius: 25.0,
           ),
           trailing: Chip(
-            label: Text('${planningDto.professional.price} €/h'),
-            avatar: Icon(Icons.euro_symbol),
-            backgroundColor: Colors.transparent,
+            label: Text(
+              '${planningDto.professional.price} €/h',
+              style: TextStyle(color: Theme.of(context).accentColor, fontSize: 18.0),
+            ),
+            avatar: Icon(Icons.euro_symbol, color: Theme.of(context).accentColor,),
+            shape: StadiumBorder(side: BorderSide()),
+            backgroundColor: Theme.of(context).primaryColor,
           ),
           subtitle: Text(
             'Subtitle here',
