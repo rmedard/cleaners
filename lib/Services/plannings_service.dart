@@ -23,8 +23,12 @@ class PlanningsService {
       Response response = await get(url, headers: loggedInUser.headers);
       if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(response.body);
-        List<Planning> plannings =
-            data.map((dynamic item) => Planning.fromJson(item)).toList();
+        List<Planning> plannings = data
+            .map((dynamic item) => Planning.fromJson(item))
+            .where((planning) =>
+                planning.customerId == loggedInUser.person.id ||
+                planning.professionalId == loggedInUser.person.id)
+            .toList();
         Set<int> serviceIds =
             plannings.map((Planning plan) => plan.serviceId).toSet();
         for (int serviceId in serviceIds) {

@@ -17,17 +17,25 @@ class _PlanningsState extends State<Plannings> {
       future: _planningsService.getPlannings(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return ListView.separated(
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return PlanningComponent(planningDto: snapshot.data[index]);
-            },
-            separatorBuilder: (context, index) => Divider(height: 3.0),
-            itemCount: snapshot.data.length,
-            padding: EdgeInsets.all(8.0),
-          );
+          if(snapshot.data == null) {
+            return Text(snapshot.hasError
+                ? snapshot.error.toString()
+                : 'Pas de plannings trouvés');
+          } else {
+            return ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return PlanningComponent(planningDto: snapshot.data[index]);
+              },
+              separatorBuilder: (context, index) => Divider(height: 3.0),
+              itemCount: snapshot.data.length,
+              padding: EdgeInsets.all(8.0),
+            );
+          }
         } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return Text(snapshot.hasError
+              ? snapshot.hasError.toString()
+              : 'Pas de plannings trouvés');
         } else {
           return Center(
             child: CircularProgressIndicator(

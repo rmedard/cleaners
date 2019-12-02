@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:cleaners/Services/auth_service.dart';
 import 'package:cleaners/constants.dart';
 import 'package:cleaners/models/service.dart';
 import 'package:http/http.dart';
 
 class ServicesService {
   final String apiUrl = kApiUrl;
+  final AuthService _authService = AuthService();
 
   Future<List<Service>> getServices() async {
     var url = '$apiUrl/services';
@@ -25,8 +27,14 @@ class ServicesService {
     Response response = await get(url);
     Service serviceObj;
     if (response.statusCode == 200) {
-      serviceObj = Service.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      serviceObj =
+          Service.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
       serviceObj.categoryId = service.categoryId;
+      _authService.getLoggedInUser().then((user) {
+        if (user != null) {
+          serviceObj.professionals.removeWhere((p) => p.id == user.person.id);
+        }
+      });
     }
     return serviceObj;
   }
@@ -34,10 +42,16 @@ class ServicesService {
   Future<Service> getServiceById(int serviceId) async {
     var url = '$apiUrl/services/$serviceId';
     Response response = await get(url);
+    Service serviceObj;
     if (response.statusCode == 200) {
-      return Service.fromJson(
-          jsonDecode(response.body) as Map<String, dynamic>);
+      serviceObj =
+          Service.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      _authService.getLoggedInUser().then((user) {
+        if (user != null) {
+          serviceObj.professionals.removeWhere((p) => p.id == user.person.id);
+        }
+      });
     }
-    return null;
+    return serviceObj;
   }
 }
