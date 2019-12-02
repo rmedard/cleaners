@@ -71,6 +71,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
@@ -109,28 +110,36 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         });
                       },
                     ),
-                    RangeSlider(
-                      values: _sliderValues,
-                      labels: RangeLabels('${_sliderValues.start.round()}h',
-                          '${_sliderValues.end.round()}h'),
-                      min: 8.0,
-                      max: 18.0,
-                      divisions: 10,
-                      onChanged: (RangeValues values) {
-                        setState(() {
-                          if (values.end - values.start >= 1) {
-                            _sliderValues = values;
-                          } else {
-                            if (_sliderValues.start == values.start) {
-                              _sliderValues = RangeValues(
-                                  _sliderValues.start, _sliderValues.start + 1);
-                            } else {
-                              _sliderValues = RangeValues(
-                                  _sliderValues.end - 1, _sliderValues.end);
-                            }
-                          }
-                        });
-                      },
+                    Row(
+                      children: <Widget>[
+                        Text('${_sliderValues.start.round()}h', style: TextStyle(fontSize: 20.0),),
+                        Expanded(
+                          child: RangeSlider(
+                            values: _sliderValues,
+                            labels: RangeLabels('${_sliderValues.start.round()}h',
+                                '${_sliderValues.end.round()}h'),
+                            min: 8.0,
+                            max: 18.0,
+                            divisions: 10,
+                            onChanged: (RangeValues values) {
+                              setState(() {
+                                if (values.end - values.start >= 1) {
+                                  _sliderValues = values;
+                                } else {
+                                  if (_sliderValues.start == values.start) {
+                                    _sliderValues = RangeValues(
+                                        _sliderValues.start, _sliderValues.start + 1);
+                                  } else {
+                                    _sliderValues = RangeValues(
+                                        _sliderValues.end - 1, _sliderValues.end);
+                                  }
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                        Text('${_sliderValues.end.round()}h', style: TextStyle(fontSize: 20.0),),
+                      ],
                     )
                   ],
                 ),
