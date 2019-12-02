@@ -77,14 +77,18 @@ class OrderDialog extends StatelessWidget {
                       },
                       child: Text(
                         'Annuler',
-                        style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 16.0),
                       ),
                     ),
                     FlatButton(
                       onPressed: onCreatePlanning,
                       child: Text(
                         'Confirmer',
-                        style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 16.0),
                       ),
                     )
                   ],
