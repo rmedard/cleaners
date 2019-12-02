@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 void main() => runApp(HouseCleaners());
 
 class HouseCleaners extends StatelessWidget {
+
   static final RangeThumbSelector _customRangeThumbSelector = (
     TextDirection textDirection,
     RangeValues values,
@@ -33,8 +34,6 @@ class HouseCleaners extends StatelessWidget {
           primaryColor: Color(0xFF222428),
           scaffoldBackgroundColor: Color(0xFFFED330),
           accentColor: Color(0xFFFED330),
-          textSelectionHandleColor: Color(0xFFFED330),
-          toggleableActiveColor: Color(0xFFFED330),
           buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
           bottomAppBarTheme: BottomAppBarTheme(color: Color(0xFF222428)),
           sliderTheme: SliderThemeData(
@@ -44,7 +43,7 @@ class HouseCleaners extends StatelessWidget {
             thumbColor: Color(0xFF222428),
             overlayColor: Color(0x1D222428),
             valueIndicatorColor: Color(0xFF222428),
-            inactiveTrackColor: Color(0xFFFED330),
+            inactiveTrackColor: Color(0xFF222428).withOpacity(0.2),
           ),
         ),
         initialRoute: TabScreen.id,
