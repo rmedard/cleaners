@@ -31,13 +31,16 @@ class PlanningComponent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                    '${planningDto.professional.firstName} ${planningDto.professional.lastName}'),
+                  '${planningDto.professional.firstName} ${planningDto.professional.lastName}',
+                  style: TextStyle(color: Colors.white),
+                ),
                 Badge(
                   badgeContent: Text(
                     '${planningDto.professional.price}€/h',
                     style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w700),
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   shape: BadgeShape.square,
                   borderRadius: 10.0,
@@ -62,7 +65,7 @@ class PlanningComponent extends StatelessWidget {
                   'Service',
                   style: TextStyle(color: Theme.of(context).accentColor),
                 ),
-                Text('${planningDto.service.name}')
+                Text('${planningDto.service.name}', style: TextStyle(color: Colors.white))
               ],
             ),
             Row(
@@ -75,7 +78,8 @@ class PlanningComponent extends StatelessWidget {
                 Text(
                     '${DateUtils.dateToString(planning.startTime(), "dd-MM-yyyy")}, '
                     '${DateUtils.dateToString(planning.startTime(), "HH:mm")} - '
-                    '${DateUtils.dateToString(planning.endTime(), "HH:mm")}')
+                    '${DateUtils.dateToString(planning.endTime(), "HH:mm")}',
+                    style: TextStyle(color: Colors.white))
               ],
             ),
           ],
