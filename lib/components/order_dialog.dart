@@ -77,7 +77,8 @@ class OrderDialog extends StatelessWidget {
                     fontSize: 14.0, color: Theme.of(context).primaryColor),
               ),
               Text(
-                '${planningDto.professional.firstName}, ${planningDto.professional.lastName}',
+                '${planningDto.professional.firstName.trim()}, '
+                    '${planningDto.professional.lastName.trim()}',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 16.0,
