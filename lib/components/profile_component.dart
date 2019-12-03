@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 class ProfileComponent extends StatelessWidget {
   final LoggedInUser loggedInUser;
+  final double profilePicRadius = 50.0;
 
   const ProfileComponent({@required this.loggedInUser});
 
@@ -16,10 +17,10 @@ class ProfileComponent extends StatelessWidget {
       alignment: Alignment.topCenter,
       children: <Widget>[
         Card(
-          margin: EdgeInsets.only(top: 55.0, left: 20.0, right: 20.0, bottom: 20.0),
+          margin: EdgeInsets.only(top: profilePicRadius + 5, left: 20.0, right: 20.0, bottom: 20.0),
           color: Colors.white,
           child: Padding(
-            padding: EdgeInsets.only(top: 50.0),
+            padding: EdgeInsets.only(top: profilePicRadius),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
@@ -67,10 +68,10 @@ class ProfileComponent extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             border: Border.all(color: Colors.white, width: 1.0),
-            borderRadius: BorderRadius.circular(50.0),
+            borderRadius: BorderRadius.circular(profilePicRadius),
           ),
           child: CircleAvatar(
-            radius: 50.0,
+            radius: profilePicRadius,
             backgroundImage: person.picture == null || person.picture.isEmpty
                 ? AssetImage('assets/images/profile.png')
                 : NetworkImage(person.picture),

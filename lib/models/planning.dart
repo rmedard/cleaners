@@ -51,21 +51,32 @@ class Planning {
       };
 
   Map<String, dynamic> toNewJson() => {
-    'professional_id': professionalId,
-    'customer_id': customerId,
-    'service_id': serviceId,
-    'date': date,
-    'start_hour': startHour,
-    'end_hour': endHour,
-    'status_id': statusId
-  };
+        'professional_id': professionalId,
+        'customer_id': customerId,
+        'service_id': serviceId,
+        'date': date,
+        'start_hour': startHour,
+        'end_hour': endHour,
+        'status_id': statusId
+      };
 
   DateTime startTime() {
-    return DateTime.parse(
-        "$date${startHour.substring(startHour.indexOf('T'))}");
+    if(date.contains('T')) {
+      return DateTime.parse(
+          "${date.substring(0, date.indexOf('T'))}${startHour.substring(startHour.indexOf('T'))}");
+    } else {
+      return DateTime.parse(
+          "$date${startHour.substring(startHour.indexOf('T'))}");
+    }
   }
 
   DateTime endTime() {
-    return DateTime.parse("$date${endHour.substring(endHour.indexOf('T'))}");
+    if(date.contains('T')) {
+      return DateTime.parse(
+          "${date.substring(0, date.indexOf('T'))}${endHour.substring(endHour.indexOf('T'))}");
+    } else {
+      return DateTime.parse(
+          "$date${endHour.substring(endHour.indexOf('T'))}");
+    }
   }
 }

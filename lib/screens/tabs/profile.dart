@@ -17,6 +17,7 @@ class _ProfileState extends State<Profile> {
     return Consumer<AuthNotifier>(
       builder: (context, notifier, child) {
         return Container(
+          padding: EdgeInsets.only(top: 10.0),
             child: notifier.loggedInUser != null
                 ? ProfileComponent(loggedInUser: notifier.loggedInUser)
                 : LoginFormComponent());

@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cleaners/constants.dart';
 import 'package:cleaners/models/dto/planning_dto.dart';
+import 'package:cleaners/utils/date_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class OrderDialog extends StatelessWidget {
   final PlanningDto planningDto;
@@ -55,25 +57,67 @@ class OrderDialog extends StatelessWidget {
               Text(
                 'Passer la commande',
                 style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w400,
                     color: Theme.of(context).primaryColor),
               ),
               SizedBox(height: 16.0),
               Text(
-                planningDto.service.description,
+                planningDto.service.name,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 16.0, color: Theme.of(context).primaryColor),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24.0,
+                    color: Theme.of(context).primaryColor),
+              ),
+              Text(
+                'executé par',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 14.0, color: Theme.of(context).primaryColor),
+              ),
+              Text(
+                '${planningDto.professional.firstName}, ${planningDto.professional.lastName}',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 16.0,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w700),
               ),
               SizedBox(height: 24.0),
+              Text(
+                  'Le ${DateUtils.dateToString(planningDto.planning.startTime(), 'dd-MM-yyyy')}, '
+                  'de ${DateUtils.dateToString(planningDto.planning.startTime(), 'HH:mm')} '
+                  'à ${DateUtils.dateToString(planningDto.planning.endTime(), 'HH:mm')}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w700)),
+              Chip(
+                backgroundColor: Theme.of(context).primaryColor,
+                avatar: CircleAvatar(
+                  backgroundColor: Theme.of(context).accentColor,
+                  child: Icon(
+                    Icons.euro_symbol,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                label: Text(
+                  '${planningDto.getTotalCost()}',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+              ),
               Align(
                 alignment: Alignment.bottomRight,
                 child: ButtonBar(
                   children: <Widget>[
-                    FlatButton(
+                    OutlineButton(
                       onPressed: () {
-                        Navigator.of(context).pop(); // To close the dialog
+                        Navigator.of(context).pop();
                       },
                       child: Text(
                         'Annuler',
@@ -81,8 +125,10 @@ class OrderDialog extends StatelessWidget {
                             color: Theme.of(context).primaryColor,
                             fontSize: 16.0),
                       ),
+                      borderSide: BorderSide(
+                          style: BorderStyle.solid, color: Colors.black),
                     ),
-                    FlatButton(
+                    OutlineButton(
                       onPressed: onCreatePlanning,
                       child: Text(
                         'Confirmer',
@@ -90,7 +136,9 @@ class OrderDialog extends StatelessWidget {
                             color: Theme.of(context).primaryColor,
                             fontSize: 16.0),
                       ),
-                    )
+                      borderSide: BorderSide(
+                          style: BorderStyle.solid, color: Colors.black),
+                    ),
                   ],
                 ),
               ),
