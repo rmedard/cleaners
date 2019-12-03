@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       Container(
-                        color: Color(0xEF222428),
+                        color: Color(0xCF222428),
                         child: Center(
                           child: Text(
                             '${interiorServices.length} Services',
@@ -116,7 +116,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       Container(
-                        color: Color(0xEF222428),
+                        color: Color(0xCF222428),
                         child: Center(
                           child: Text(
                             '${exteriorServices.length} Services',
