@@ -29,7 +29,7 @@ class ServicesService {
     if (response.statusCode == 200) {
       serviceObj =
           Service.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
-      serviceObj.categoryId = service.categoryId;
+      serviceObj.category = service.category;
       _authService.getLoggedInUser().then((user) {
         if (user != null) {
           serviceObj.professionals.removeWhere((p) => p.id == user.person.id);

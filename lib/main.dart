@@ -27,7 +27,8 @@ class HouseCleaners extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      builder: (context) => AuthNotifier(),
+      // builder: (context) => AuthNotifier(),
+      create: (_) => AuthNotifier(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
