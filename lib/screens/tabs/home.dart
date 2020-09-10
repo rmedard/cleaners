@@ -99,7 +99,6 @@ class _HomeState extends State<Home> {
                     child: Image.asset('assets/images/exterieur.jpg'),
                   ),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Center(
                         child: Text(
