@@ -1,12 +1,17 @@
 import 'package:cleaners/Services/auth_service.dart';
+import 'package:cleaners/Services/customers_service.dart';
+import 'package:cleaners/Services/services_service.dart';
 import 'package:cleaners/components/professional_component.dart';
 import 'package:cleaners/components/service_component.dart';
-import 'package:cleaners/constants.dart';
+import 'package:cleaners/models/customer.dart';
 import 'package:cleaners/models/dto/logged_in_user.dart';
-import 'package:cleaners/models/dto/planning_dto.dart';
-import 'package:cleaners/models/planning.dart';
+import 'package:cleaners/models/dto/reservation_for_create.dart';
+import 'package:cleaners/models/expertise.dart';
+import 'package:cleaners/models/professional.dart';
+import 'package:cleaners/models/role.dart';
 import 'package:cleaners/models/service.dart';
 import 'package:cleaners/utils/date_utils.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,7 +19,9 @@ class ServiceScreen extends StatefulWidget {
   static const String id = 'service_screen';
   final Service service;
 
-  ServiceScreen({this.service});
+  ServiceScreen({
+    this.service,
+  });
 
   @override
   _ServiceScreenState createState() => _ServiceScreenState();
@@ -22,9 +29,14 @@ class ServiceScreen extends StatefulWidget {
 
 class _ServiceScreenState extends State<ServiceScreen> {
   AuthService _authService = AuthService();
+  ServicesService _servicesService = ServicesService();
+  CustomersService _customersService = CustomersService();
   RangeValues _sliderValues = RangeValues(8, 18);
   DateTime selectedDateTime = DateUtils.soonestSelectableDate();
   LoggedInUser loggedInUser;
+  List<Expertise> expertises = [];
+  List<Professional> professionals = [];
+  Customer customer;
 
   @override
   void initState() {
@@ -32,6 +44,22 @@ class _ServiceScreenState extends State<ServiceScreen> {
     _authService.getLoggedInUser().then((user) {
       setState(() {
         loggedInUser = user;
+        var userRole = user.user.roles[0];
+        if (EnumToString.convertToString(RoleName.Customer) == userRole) {
+          _customersService
+              .getCustomerByUserId(customerId: loggedInUser.user.id)
+              .then((c) {
+            customer = c;
+          });
+        }
+      });
+    });
+    _servicesService.getExpertises(serviceId: widget.service.id).then((e) {
+      // print('expertises: ${e.length}');
+      setState(() {
+        expertises.addAll(e);
+        expertises.forEach((element) => element.service = widget.service);
+        professionals = expertises.map((e) => e.professional).toList();
       });
     });
   }
@@ -112,11 +140,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     ),
                     Row(
                       children: <Widget>[
-                        Text('${_sliderValues.start.round()}h', style: TextStyle(fontSize: 20.0),),
+                        Text(
+                          '${_sliderValues.start.round()}h',
+                          style: TextStyle(fontSize: 20.0),
+                        ),
                         Expanded(
                           child: RangeSlider(
                             values: _sliderValues,
-                            labels: RangeLabels('${_sliderValues.start.round()}h',
+                            labels: RangeLabels(
+                                '${_sliderValues.start.round()}h',
                                 '${_sliderValues.end.round()}h'),
                             min: 8.0,
                             max: 18.0,
@@ -128,17 +160,22 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 } else {
                                   if (_sliderValues.start == values.start) {
                                     _sliderValues = RangeValues(
-                                        _sliderValues.start, _sliderValues.start + 1);
+                                        _sliderValues.start,
+                                        _sliderValues.start + 1);
                                   } else {
                                     _sliderValues = RangeValues(
-                                        _sliderValues.end - 1, _sliderValues.end);
+                                        _sliderValues.end - 1,
+                                        _sliderValues.end);
                                   }
                                 }
                               });
                             },
                           ),
                         ),
-                        Text('${_sliderValues.end.round()}h', style: TextStyle(fontSize: 20.0),),
+                        Text(
+                          '${_sliderValues.end.round()}h',
+                          style: TextStyle(fontSize: 20.0),
+                        ),
                       ],
                     )
                   ],
@@ -147,30 +184,22 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Expanded(
                 child: ListView.separated(
                   padding: EdgeInsets.symmetric(vertical: 10.0),
-                  itemCount: widget.service.professionals.length,
+                  itemCount: professionals.length,
                   itemBuilder: (context, index) {
                     return ProfessionalComponent(
-                      planningDto: PlanningDto(
-                          professional: widget.service.professionals[index],
-                          planning: Planning.toCreate(
-                              professionalId:
-                                  widget.service.professionals[index].id,
-                              customerId: loggedInUser == null
-                                  ? 0
-                                  : loggedInUser.person.id,
-                              serviceId: widget.service.id,
-                              date:
-                                  '${DateUtils.dateToString(selectedDateTime, 'yyyy-MM-dd')}T00:00:00.000',
-                              startHour: DateUtils.dateToString(
-                                  DateTime(year, month, day,
-                                      _sliderValues.start.truncate(), 0, 0),
-                                  kMainDateTimeFormat),
-                              endHour: DateUtils.dateToString(
-                                  DateTime(year, month, day,
-                                      _sliderValues.end.truncate(), 0, 0),
-                                  kMainDateTimeFormat)),
-                          service: widget.service),
-                    );
+                        reservationForCreate: ReservationForCreate.create(
+                            customerId: loggedInUser == null
+                                ? 0
+                                : customer == null ? 0 : customer.id,
+                            expertiseForServiceCreate:
+                                ExpertiseForServiceCreate.create(
+                                    professionalId: professionals[index].id,
+                                    serviceId: widget.service.id),
+                            startTime: DateTime(year, month, day,
+                                _sliderValues.start.truncate(), 0, 0),
+                            duration: _sliderValues.end.round() -
+                                _sliderValues.start.round()),
+                        expertises: expertises);
                   },
                   separatorBuilder: (context, index) => Divider(
                     height: 2.0,

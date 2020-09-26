@@ -1,34 +1,43 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cleaners/Services/auth_service.dart';
-import 'package:cleaners/Services/plannings_service.dart';
+import 'package:cleaners/Services/reservations_service.dart';
 import 'package:cleaners/components/order_dialog.dart';
-import 'package:cleaners/models/dto/planning_dto.dart';
+import 'package:cleaners/models/dto/reservation_for_create.dart';
+import 'package:cleaners/models/expertise.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ProfessionalComponent extends StatelessWidget {
-  final PlanningDto planningDto;
+  final ReservationForCreate reservationForCreate;
+  final List<Expertise> expertises;
   final SlidableController slidableController = SlidableController();
-  final PlanningsService _planningsService = PlanningsService();
+  final ReservationsService _reservationsService = ReservationsService();
   final AuthService _authService = AuthService();
 
-  ProfessionalComponent({@required this.planningDto});
+  ProfessionalComponent(
+      {@required this.reservationForCreate, @required this.expertises});
 
   @override
   Widget build(BuildContext context) {
-    var photo = planningDto.professional.picture == null
+    var expertise = expertises.firstWhere((element) =>
+        element.professionalId ==
+            reservationForCreate.expertiseForServiceCreate.professionalId &&
+        element.serviceId == reservationForCreate.expertiseForServiceCreate.serviceId);
+    var photo = expertise.professional.picture == null
         ? AssetImage('assets/images/profile.png')
-        : CachedNetworkImageProvider(planningDto.professional.picture);
+        : CachedNetworkImageProvider(expertise.professional.picture);
 
-    void createPlanning() {
-      _planningsService.createPlanning(planningDto.planning).then((success) {
-        String message = success
+    void createReservation() {
+      _reservationsService
+          .createReservation(reservationForCreate: reservationForCreate)
+          .then((reservation) {
+        String message = reservation != null
             ? 'Commande passée acess succès'
             : 'Oops, commande échouée...';
         IconData iconData =
-            success ? Icons.check_circle_outline : Icons.error_outline;
-        Color color = success ? Colors.green : Colors.red;
+            reservation != null ? Icons.check_circle_outline : Icons.error_outline;
+        Color color = reservation != null ? Colors.green : Colors.red;
         Flushbar(
           message: message,
           icon: Icon(
@@ -48,8 +57,9 @@ class ProfessionalComponent extends StatelessWidget {
           showDialog(
             context: context,
             builder: (BuildContext context) => OrderDialog(
-              planningDto: planningDto,
-              onCreatePlanning: createPlanning,
+              reservation: reservationForCreate,
+              expertise: expertise,
+              onCreateReservation: createReservation,
             ),
           );
         } else {
@@ -67,7 +77,7 @@ class ProfessionalComponent extends StatelessWidget {
     }
 
     return Slidable(
-      key: Key('${planningDto.professional.id}'),
+      key: Key('${expertise.professional.id}'),
       controller: slidableController,
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
@@ -85,7 +95,7 @@ class ProfessionalComponent extends StatelessWidget {
         color: Colors.white,
         child: ListTile(
           title: Text(
-            '${planningDto.professional.lastName} ${planningDto.professional.firstName}',
+            '${expertise.professional.lastName} ${expertise.professional.firstName}',
             style: TextStyle(color: Theme.of(context).primaryColor),
           ),
           leading: CircleAvatar(
@@ -94,10 +104,14 @@ class ProfessionalComponent extends StatelessWidget {
           ),
           trailing: Chip(
             label: Text(
-              '${planningDto.professional.price} €/h',
-              style: TextStyle(color: Theme.of(context).accentColor, fontSize: 18.0),
+              '${expertise.hourlyRate} €/h',
+              style: TextStyle(
+                  color: Theme.of(context).accentColor, fontSize: 18.0),
             ),
-            avatar: Icon(Icons.euro_symbol, color: Theme.of(context).accentColor,),
+            avatar: Icon(
+              Icons.euro_symbol,
+              color: Theme.of(context).accentColor,
+            ),
             shape: StadiumBorder(side: BorderSide()),
             backgroundColor: Theme.of(context).primaryColor,
           ),

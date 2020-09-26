@@ -1,5 +1,6 @@
 import 'package:cleaners/Services/services_service.dart';
 import 'package:cleaners/models/arguments/service_argument.dart';
+import 'package:cleaners/models/expertise.dart';
 import 'package:cleaners/models/service.dart';
 import 'package:cleaners/screens/services_list_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,10 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _servicesService.getServices().then((services) {
+    _servicesService.getAllServices().then((services) {
       setState(() {
-        interiorServices = services.where((s) => s.category == Category.INTERIEUR).toList();
-        exteriorServices = services.where((s) => s.category == Category.EXTERIEUR).toList();
+        interiorServices = services.where((s) => s.category == Category.Interieur).toList();
+        exteriorServices = services.where((s) => s.category == Category.Exterieur).toList();
       });
     });
   }
@@ -85,8 +86,7 @@ class _HomeState extends State<Home> {
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, ServicesListScreen.id,
-                arguments: ServiceArgument(
-                    serviceType: 'exterieur', services: exteriorServices));
+                arguments: ServiceArgument(serviceType: 'exterieur', services: exteriorServices));
           },
           child: Container(
             child: Padding(

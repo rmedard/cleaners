@@ -1,25 +1,23 @@
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cleaners/models/dto/planning_dto.dart';
-import 'package:cleaners/models/planning.dart';
+import 'package:cleaners/models/reservation.dart';
 import 'package:cleaners/utils/date_utils.dart';
 import 'package:flutter/material.dart';
 
-class PlanningComponent extends StatelessWidget {
-  final PlanningDto planningDto;
+class ReservationComponent extends StatelessWidget {
+  final Reservation reservation;
 
-  PlanningComponent({@required this.planningDto});
+  ReservationComponent({@required this.reservation});
 
   @override
   Widget build(BuildContext context) {
-    Planning planning = planningDto.planning;
-    var photo = planningDto.professional.picture == null
+    var photo = reservation.professional.picture == null
         ? AssetImage('assets/images/profile.png')
-        : CachedNetworkImageProvider(planningDto.professional.picture);
+        : CachedNetworkImageProvider(reservation.professional.picture);
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
-        border: planning.startTime().isBefore(DateTime.now())
+        border: reservation.startTime.isBefore(DateTime.now())
             ? Border.all(color: Colors.red, width: 3.0)
             : Border.all(color: Colors.green, width: 3.0),
       ),
@@ -31,12 +29,12 @@ class PlanningComponent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  '${planningDto.professional.firstName} ${planningDto.professional.lastName}',
+                  '${reservation.professional.firstName} ${reservation.professional.lastName}',
                   style: TextStyle(color: Colors.white),
                 ),
                 Badge(
                   badgeContent: Text(
-                    '${planningDto.professional.price}€/h',
+                    '${reservation.expertise.hourlyRate}€/h',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w700,
@@ -65,7 +63,8 @@ class PlanningComponent extends StatelessWidget {
                   'Service',
                   style: TextStyle(color: Theme.of(context).accentColor),
                 ),
-                Text('${planningDto.service.name}', style: TextStyle(color: Colors.white))
+                Text('${reservation.expertise.service.title}',
+                    style: TextStyle(color: Colors.white))
               ],
             ),
             Row(
@@ -76,9 +75,9 @@ class PlanningComponent extends StatelessWidget {
                   style: TextStyle(color: Theme.of(context).accentColor),
                 ),
                 Text(
-                    '${DateUtils.dateToString(planning.startTime(), "dd-MM-yyyy")}, '
-                    '${DateUtils.dateToString(planning.startTime(), "HH:mm")} - '
-                    '${DateUtils.dateToString(planning.endTime(), "HH:mm")}',
+                    '${DateUtils.dateToString(reservation.startTime, "dd-MM-yyyy")}, '
+                    '${DateUtils.dateToString(reservation.startTime, "HH:mm")} - '
+                    '${DateUtils.dateToString(reservation.endTime, "HH:mm")}',
                     style: TextStyle(color: Colors.white))
               ],
             ),

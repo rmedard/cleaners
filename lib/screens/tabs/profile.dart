@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
+  static const String id = 'profile_screen';
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-  static const String id = 'profile_screen';
 
   @override
   Widget build(BuildContext context) {

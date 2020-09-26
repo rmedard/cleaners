@@ -1,15 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cleaners/constants.dart';
-import 'package:cleaners/models/dto/planning_dto.dart';
+import 'package:cleaners/models/dto/reservation_for_create.dart';
+import 'package:cleaners/models/expertise.dart';
 import 'package:cleaners/utils/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class OrderDialog extends StatelessWidget {
-  final PlanningDto planningDto;
-  final Function onCreatePlanning;
+  final ReservationForCreate reservation;
+  final Expertise expertise;
+  final Function onCreateReservation;
 
-  OrderDialog({@required this.planningDto, @required this.onCreatePlanning});
+  OrderDialog(
+      {@required this.reservation,
+      @required this.expertise,
+      @required this.onCreateReservation});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +29,9 @@ class OrderDialog extends StatelessWidget {
   }
 
   dialogContent(BuildContext context) {
-    var photo = planningDto.professional.picture == null
+    var photo = expertise.professional.picture == null
         ? AssetImage('assets/images/profile.png')
-        : CachedNetworkImageProvider(planningDto.professional.picture);
+        : CachedNetworkImageProvider(expertise.professional.picture);
 
     return Stack(
       alignment: Alignment.topCenter,
@@ -63,7 +68,7 @@ class OrderDialog extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               Text(
-                planningDto.service.name,
+                expertise.service.title,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
@@ -77,8 +82,8 @@ class OrderDialog extends StatelessWidget {
                     fontSize: 14.0, color: Theme.of(context).primaryColor),
               ),
               Text(
-                '${planningDto.professional.firstName.trim()}, '
-                    '${planningDto.professional.lastName.trim()}',
+                '${expertise.professional.firstName.trim()}, '
+                '${expertise.professional.lastName.trim()}',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 16.0,
@@ -87,9 +92,9 @@ class OrderDialog extends StatelessWidget {
               ),
               SizedBox(height: 24.0),
               Text(
-                  'Le ${DateUtils.dateToString(planningDto.planning.startTime(), 'dd-MM-yyyy')}, '
-                  'de ${DateUtils.dateToString(planningDto.planning.startTime(), 'HH:mm')} '
-                  'à ${DateUtils.dateToString(planningDto.planning.endTime(), 'HH:mm')}',
+                  'Le ${DateUtils.dateToString(reservation.startTime, 'dd-MM-yyyy')}, '
+                  'de ${DateUtils.dateToString(reservation.startTime, 'HH:mm')} '
+                  'à ${DateUtils.dateToString(reservation.startTime.add(new Duration(hours: reservation.duration)), 'HH:mm')}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 18.0,
@@ -105,7 +110,7 @@ class OrderDialog extends StatelessWidget {
                   ),
                 ),
                 label: Text(
-                  '${planningDto.getTotalCost()}',
+                  '${expertise.hourlyRate * reservation.duration}',
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.w700,
@@ -130,7 +135,7 @@ class OrderDialog extends StatelessWidget {
                           style: BorderStyle.solid, color: Colors.black),
                     ),
                     OutlineButton(
-                      onPressed: onCreatePlanning,
+                      onPressed: onCreateReservation,
                       child: Text(
                         'Confirmer',
                         style: TextStyle(

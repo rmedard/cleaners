@@ -15,7 +15,7 @@ class ServiceComponent extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (clickable) {
-          _servicesService.getService(service).then((s) {
+          _servicesService.getServiceById(serviceId: service.id).then((s) {
             Navigator.pushNamed(context, ServiceScreen.id, arguments: s);
           });
         }
@@ -36,9 +36,12 @@ class ServiceComponent extends StatelessWidget {
                   ),
                   color: Theme.of(context).primaryColor),
               child: ListTile(
-                leading: Icon(Icons.done_all, color: Theme.of(context).accentColor,),
+                leading: Icon(
+                  Icons.done_all,
+                  color: Theme.of(context).accentColor,
+                ),
                 title: Text(
-                  service.name,
+                  service.title,
                   style: TextStyle(
                       color: Theme.of(context).accentColor, fontSize: 25.0),
                 ),

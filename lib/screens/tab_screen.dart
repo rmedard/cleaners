@@ -1,7 +1,10 @@
+import 'package:cleaners/Services/auth_service.dart';
+import 'package:cleaners/models/dto/logged_in_user.dart';
+import 'package:cleaners/models/dto/reservation_search_criteria.dart';
 import 'package:flutter/material.dart';
 
 import 'tabs/home.dart';
-import 'tabs/plannings.dart';
+import 'tabs/reservations.dart';
 import 'tabs/profile.dart';
 
 class TabScreen extends StatefulWidget {
@@ -14,11 +17,14 @@ class TabScreen extends StatefulWidget {
 class _TabScreenState extends State<TabScreen> {
   final List<TabPage> tabPages = [
     TabPage(widget: Home(), title: 'House Cleaners Services'),
-    TabPage(widget: Plannings(), title: 'Plannings'),
+    TabPage(widget: Reservations(), title: 'Reservations'),
     TabPage(widget: Profile(), title: 'Profile'),
   ];
 
+  final AuthService _authService = AuthService();
   int _currentIndex = 0;
+  ReservationSearchCriteria searchCriteria;
+  LoggedInUser loggedInUser;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +80,7 @@ class _TabScreenState extends State<TabScreen> {
                     icon: Icon(
                       Icons.timer,
                     ),
-                    title: Text('Plannings'),
+                    title: Text('Reservations'),
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(

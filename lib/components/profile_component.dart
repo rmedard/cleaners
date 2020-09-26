@@ -12,12 +12,13 @@ class ProfileComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Person person = loggedInUser.person;
+    Person person = loggedInUser.user.person;
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
         Card(
-          margin: EdgeInsets.only(top: profilePicRadius + 5, left: 20.0, right: 20.0, bottom: 20.0),
+          margin: EdgeInsets.only(
+              top: profilePicRadius + 5, left: 20.0, right: 20.0, bottom: 20.0),
           color: Colors.white,
           child: Padding(
             padding: EdgeInsets.only(top: profilePicRadius),
@@ -42,7 +43,7 @@ class ProfileComponent extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                       ),
                       Text(
-                        '${person.streetName} ${person.plotNumber}, ${person.postCode} ${person.cityName}',
+                        '${person.address.streetName} ${person.address.plotNumber}, ${person.address.postalCode} ${person.address.city}',
                         style: TextStyle(
                             fontSize: 18.0,
                             color: Theme.of(context).primaryColor),

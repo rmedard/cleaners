@@ -1,35 +1,27 @@
 import 'package:cleaners/models/professional.dart';
-import 'package:flutter/foundation.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 
 class Service {
   int id;
-  String name;
+  String title;
   String description;
   Category category;
-  List<Professional> professionals = [];
 
-  Service({this.id, this.name, this.description, this.category});
+  Service({this.id, this.title, this.description, this.category});
 
   Service.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        name = json['title'],
+        title = json['title'],
         description = json['description'] == null ? "" : json['description'],
-        category = json['category'] == 'Exterieur'
-            ? Category.EXTERIEUR
-            : Category.INTERIEUR,
-        professionals = json['professionals'] == null
-            ? []
-            : (json['professionals'] as List<dynamic>)
-                .map((p) => Professional.fromJson(p as Map<String, dynamic>))
-                .toList();
+        category =
+            Category.values.firstWhere((e) => EnumToString.convertToString(e) == json['category']);
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'title': name,
+        'title': title,
         'description': description,
-        'category': category.toString(),
-        'professionals': professionals
+        'category': category.toString()
       };
 }
 
-enum Category { INTERIEUR, EXTERIEUR }
+enum Category { Interieur, Exterieur }

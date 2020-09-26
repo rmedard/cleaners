@@ -20,7 +20,7 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).primaryColor,
+      color: Colors.black12,
       margin: EdgeInsets.all(10.0),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -30,7 +30,7 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextFormField(
-                style: TextStyle(fontSize: 30.0),
+                style: TextStyle(fontSize: 30.0, color: Colors.white),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   return value.isEmpty
@@ -49,7 +49,7 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
                 ),
               ),
               TextFormField(
-                style: TextStyle(fontSize: 30.0),
+                style: TextStyle(fontSize: 30.0, color: Colors.white),
                 validator: (value) {
                   return value.isEmpty
                       ? 'Veuillez introduire votre mot de passe'
@@ -72,13 +72,13 @@ class _LoginFormComponentState extends State<LoginFormComponent> {
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     // If the form is valid, display a Snackbar.
-                    Provider.of<AuthNotifier>(context)
+                    Provider.of<AuthNotifier>(context, listen: false)
                         .login(email, password)
                         .whenComplete(() {
                       LoggedInUser loggedInUser =
-                          Provider.of<AuthNotifier>(context).loggedInUser;
+                          Provider.of<AuthNotifier>(context, listen: false).loggedInUser;
                       if (loggedInUser != null) {
-                        loggedInPerson = loggedInUser.person;
+                        loggedInPerson = loggedInUser.user.person;
                         Flushbar(
                           message: 'Bienvenu ${loggedInPerson.firstName}...',
                           icon: Icon(

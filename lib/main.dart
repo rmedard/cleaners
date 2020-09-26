@@ -1,4 +1,5 @@
 import 'package:cleaners/models/arguments/service_argument.dart';
+import 'package:cleaners/models/expertise.dart';
 import 'package:cleaners/models/service.dart';
 import 'package:cleaners/notifiers/auth_notifier.dart';
 import 'package:cleaners/screens/service_screen.dart';
